@@ -113,7 +113,8 @@ details p{margin:8px 0 0;color:var(--mute);font-size:14px}
 <button class="mi" id="mset">Impostazioni<span>Premio, timbri, giorni e azzeramento</span></button>
 <button class="mi" id="mhelp">Centro assistenza<span>Domande frequenti</span></button>
 <div class="m" id="bmsg" style="margin:4px 0 10px"></div>
-<button class="p" id="menuc" style="width:100%">Chiudi</button></div></div>
+<button class="p" id="menuc" style="width:100%">Chiudi</button>
+<div class="m" id="ver" style="text-align:center;margin:12px 0 0"></div></div></div>
 <div class="modal" id="accm" hidden><div class="sheet l"><div class="h2" style="margin:0 0 12px">Account</div>
 <p style="margin:0 0 10px">L’accesso con account non è ancora disponibile.</p>
 <p class="m" style="margin:0 0 10px">Quando sarà pronto potrai salvare i dati online e usarli su più telefoni, senza perdere nulla.</p>
@@ -240,6 +241,7 @@ function ask(){
 }
 $("csend").onclick=ask;$("cin").onkeydown=e=>{if(e.key==="Enter")ask()};
 bub("Ciao! Sono l’assistente automatico dell’app. Scrivi una domanda o scegline una qui sotto.","a");chips([0,2,10]);
+const VER="1.4",VERDATA="16/11/2026";$("ver").textContent="Versione "+VER+" · "+VERDATA;
 $("dormb").onclick=()=>{onlyDorm=!onlyDorm;$("dormb").className=onlyDorm?"p":"";render()};
 {const r=$("rst");let a=false;r.onclick=()=>{if(!a){a=true;r.textContent="Conferma azzeramento?";r.style.color="var(--accent)";setTimeout(()=>{a=false;r.textContent="Azzera timbri e premi";r.style.color=""},3000);return}S.stamps=0;S.rewards=0;S.hist=[];a=false;r.textContent="Azzera timbri e premi";r.style.color="";save();render()}}$("mclose").onclick=()=>{$("modal").hidden=true};
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}

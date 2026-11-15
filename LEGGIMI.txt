@@ -1,0 +1,22 @@
+COME PUBBLICARE LA TESSERA FEDELTÀ (gratis, 5 minuti)
+
+Questa cartella contiene tutto: pagina (index.html), manifest e icone.
+
+OPZIONE 1 - Netlify Drop (la più semplice)
+1. Vai su app.netlify.com/drop
+2. Trascina dentro l'intera cartella "tessera-fedelta" (o lo ZIP, se il sito lo accetta).
+3. Dopo pochi secondi ottieni un link pubblico. Quello è il link da dare ai negozianti.
+4. Nelle impostazioni del sito puoi cambiare il nome del link.
+
+OPZIONE 2 - Cloudflare Pages o GitHub Pages
+Funzionano allo stesso modo: carichi i file e ottieni un indirizzo pubblico.
+
+COSA DEVONO FARE I NEGOZIANTI
+- iPhone: aprire il link in Safari, toccare Condividi, poi "Aggiungi alla schermata Home".
+- Android: aprire il link in Chrome, toccare i tre puntini, poi "Installa app" o "Aggiungi a schermata Home".
+Troveranno la tua icona e l'app si aprirà a schermo intero.
+
+DA SAPERE
+- I dati di ogni negozio restano salvati solo sul suo telefono. Se cambia telefono o cancella i dati del browser, li perde.
+- Se cambi indirizzo web, i negozianti dovranno riaggiungere l'app e ripartiranno da zero.
+- Per aggiornare l'app in futuro basta ricaricare i file sullo stesso sito.

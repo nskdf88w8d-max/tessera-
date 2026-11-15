@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tessera fedeltà</title>
+<style>
+:root{--bg:#f6f5f0;--card:#fff;--text:#1c1c1a;--mute:#6b6b66;--accent:#d85a30;--ok:#1d9e75;--line:#e2e0d8;color-scheme:light;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#161614;--card:#222220;--text:#f1efe8;--mute:#9a9890;--accent:#f0845c;--ok:#3ccf9c;--line:#34332f;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#161614;--card:#222220;--text:#f1efe8;--mute:#9a9890;--accent:#f0845c;--ok:#3ccf9c;--line:#34332f;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:520px;margin:0 auto;padding:18px 16px 40px}
+input{font:inherit;color:var(--text);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 12px;width:100%}
+button{font:inherit;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:10px;padding:10px 14px;cursor:pointer}
+button.p{background:var(--accent);color:#fff;border:0;font-weight:600}
+button.ok{background:var(--ok);color:#fff;border:0;font-weight:600}
+#shop{font-size:22px;font-weight:700;border:0;background:transparent;padding:4px 0}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}
+.stat b{display:block;font-size:22px}.stat span{font-size:12px;color:var(--mute)}
+.set{display:flex;align-items:center;gap:10px;color:var(--mute);font-size:14px;margin-bottom:12px}
+.set input{width:70px}
+.add{display:flex;gap:8px;margin-bottom:12px}
+.cust{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.top b{font-size:16px}.top span{color:var(--mute);font-size:13px}
+.dots{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--line)}
+.dot.on{background:var(--accent);border-color:var(--accent)}
+.acts{display:flex;gap:8px;align-items:center}
+.x{margin-left:auto;color:var(--mute);background:none;border:0;padding:6px}
+.empty{text-align:center;color:var(--mute);padding:30px 0}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:20px;z-index:20}
+.modal[hidden]{display:none}
+.sheet{background:var(--card);border-radius:16px;padding:18px;text-align:center;max-width:320px;width:100%}
+#qrbox{background:#fff;border-radius:10px;padding:8px;margin:12px 0}
+#qrbox svg{width:100%;height:auto;display:block}
+#mcode{font-size:22px;font-weight:700;letter-spacing:3px;margin-bottom:12px}
+video{width:100%;border-radius:10px;margin-bottom:12px}
+.srch{display:flex;gap:8px;margin-bottom:12px}.srch input{min-width:0}
+select{font:inherit;color:var(--text);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px}
+.bars{display:flex;gap:6px;height:60px;margin:8px 0}
+.bar{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;text-align:center}
+.bar i{display:block;background:var(--accent);border-radius:4px 4px 0 0}
+.h{font-weight:600;font-size:14px}.m{color:var(--mute);font-size:13px;margin-top:6px}.badge{color:var(--accent)!important}
+:root{--bg1:#ffe9d6;--bg2:#d6e9ff;--blue:#378add;--purple:#7f5af0;--teal:#0f9d8a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg1:#2b1a14;--bg2:#10202f}}
+:root[data-theme="dark"]{--bg1:#2b1a14;--bg2:#10202f}
+body{min-height:100vh;background:radial-gradient(circle at 1px 1px,rgba(127,127,127,.16) 1px,transparent 0) 0 0/22px 22px,linear-gradient(160deg,var(--bg1),var(--bg2)) fixed}
+button{font-weight:600;box-shadow:0 2px 6px rgba(0,0,0,.1);transition:transform .1s}
+button:active{transform:scale(.95)}
+button.p{background:linear-gradient(135deg,#ff8a3d,#e5487a);color:#fff;border:0}
+button.ok{background:linear-gradient(135deg,#27c48f,#0f9d8a);color:#fff;border:0}
+#scanb{background:linear-gradient(135deg,#4a9df0,#2f6fe0);color:#fff;border:0}
+#dormb{background:var(--card);color:var(--purple);border:1.5px solid var(--purple)}
+#dormb.p{background:linear-gradient(135deg,#7f5af0,#b06ae0);color:#fff;border:0}
+button.q{background:var(--card);color:var(--blue);border:1.5px solid var(--blue)}
+button.x{box-shadow:none}
+.hd{display:flex;align-items:center;gap:12px;margin-bottom:4px}
+#logo{width:50px;height:50px;flex:none;filter:drop-shadow(0 4px 8px rgba(229,72,122,.4))}
+.cust{border-left:5px solid var(--accent);box-shadow:0 6px 16px rgba(0,0,0,.08)}
+.dot.on{background:linear-gradient(135deg,#ffc04d,#ff7a45);border-color:transparent}
+.stat{box-shadow:0 4px 12px rgba(0,0,0,.06)}
+.stats .stat:nth-child(1) b{color:var(--blue)}.stats .stat:nth-child(2) b{color:var(--accent)}.stats .stat:nth-child(3) b{color:var(--ok)}
+.h2{font-weight:700;margin:24px 0 8px}
+.hr{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-left:5px solid var(--ok);border-radius:12px;padding:10px 12px;margin-bottom:8px}
+</style>
+<meta name="apple-mobile-web-app-title" content="Fedeltà">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#e5487a">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="favicon.png">
+</head>
+<body>
+<main>
+  <div class="hd"><svg id="logo" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff9a44"/><stop offset="1" stop-color="#e5487a"/></linearGradient></defs><rect width="64" height="64" rx="15" fill="url(#lg)"/><rect x="9" y="17" width="46" height="30" rx="6" fill="#fff"/><circle cx="19" cy="27" r="4.5" fill="#ff7a45"/><circle cx="32" cy="27" r="4.5" fill="#ff7a45"/><circle cx="45" cy="27" r="4.5" fill="#ff7a45"/><circle cx="19" cy="39" r="4.5" fill="#ff7a45"/><circle cx="32" cy="39" r="4.5" fill="none" stroke="#ff7a45" stroke-width="2" stroke-dasharray="3 2"/><path d="M45 34.5l1.4 2.9 3.1.4-2.3 2.1.6 3.1-2.8-1.6-2.8 1.6.6-3.1-2.3-2.1 3.1-.4z" fill="#ffc83d"/></svg><input id="shop" aria-label="Nome del negozio" placeholder="Nome del tuo negozio"></div>
+  <div class="stats">
+    <div class="stat"><b id="s1">0</b><span>clienti</span></div>
+    <div class="stat"><b id="s2">0</b><span>timbri dati</span></div>
+    <div class="stat"><b id="s3">0</b><span>premi dati</span></div>
+  </div>
+  <button class="x" id="rst" style="display:block;margin:-4px 0 10px auto">Azzera timbri e premi</button>
+  <div class="set">Timbri per un premio: <input id="goal" type="number" min="2" max="20" inputmode="numeric"></div>
+  <div class="set">Premio: <input id="prize" style="flex:1" placeholder="es. Caffè gratis"></div>
+  <div class="set">Timbro doppio il giorno: <select id="dbl"><option value="-1">nessuno</option><option value="1">lunedì</option><option value="2">martedì</option><option value="3">mercoledì</option><option value="4">giovedì</option><option value="5">venerdì</option><option value="6">sabato</option><option value="0">domenica</option></select></div>
+<div class="set">Cliente dormiente dopo <input id="dorm" type="number" min="3" max="365" inputmode="numeric"> giorni</div>
+<div class="stat" id="ins" style="text-align:left;margin-bottom:12px"></div>
+<div class="add"><input id="name" placeholder="Nome cliente"><button class="p" id="addb">Aggiungi</button></div>
+  <div class="srch"><input id="q" placeholder="Cerca nome o codice…"><button id="scanb">Scansiona</button><button id="dormb">Dormienti</button></div>
+  <div id="list"></div>
+  <div id="hist"></div>
+</main>
+<div class="modal" id="modal" hidden><div class="sheet"><b id="mname"></b><div id="qrbox"></div><div id="mcode"></div><button class="p" id="mclose">Chiudi</button></div></div>
+<div class="modal" id="scanm" hidden><div class="sheet"><video id="vid" playsinline muted></video><button id="sclose">Annulla</button></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script>
+const KEY="fedelta-negozio-v1";
+let S={shop:"",goal:8,prize:"Premio gratis",stamps:0,rewards:0,cust:[],log:[],hist:[],dbl:-1,days:21};
+try{const r=localStorage.getItem(KEY);if(r)S=Object.assign(S,JSON.parse(r))}catch(e){}
+const $=id=>document.getElementById(id);
+const code=()=>{const a="ABCDEFGHJKMNPQRSTUVWXYZ23456789";let s="";for(let i=0;i<6;i++)s+=a[Math.floor(Math.random()*a.length)];return s};
+S.cust.forEach(c=>{if(!c.c)c.c=code()});
+function showQR(c){
+  $("mname").textContent=c.n;$("mcode").textContent=c.c;
+  const box=$("qrbox");box.textContent="";
+  try{const q=qrcode(0,"M");q.addData("FEDELTA:"+c.c);q.make();box.innerHTML=q.createSvgTag({cellSize:6,margin:2,scalable:true})}catch(e){box.textContent="QR non disponibile"}
+  $("modal").hidden=false;
+}
+let stream=null;
+function stopScan(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}$("scanm").hidden=true}
+async function scan(){
+  if(!("BarcodeDetector" in window)||!navigator.mediaDevices){alert("La fotocamera non è disponibile qui: scrivi il codice di 6 caratteri nella ricerca.");return}
+  try{
+    const det=new BarcodeDetector({formats:["qr_code"]});
+    stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"}});
+    const v=$("vid");v.srcObject=stream;await v.play();$("scanm").hidden=false;
+    const loop=async()=>{if(!stream)return;try{const r=await det.detect(v);if(r.length){const t=r[0].rawValue.replace("FEDELTA:","");stopScan();$("q").value=t;render();return}}catch(e){}setTimeout(loop,300)};
+    loop();
+  }catch(e){stopScan();alert("Impossibile usare la fotocamera: scrivi il codice nella ricerca.")}
+}
+$("scanb").onclick=scan;$("sclose").onclick=stopScan;
+$("dormb").onclick=()=>{onlyDorm=!onlyDorm;$("dormb").className=onlyDorm?"p":"";render()};
+{const r=$("rst");let a=false;r.onclick=()=>{if(!a){a=true;r.textContent="Conferma azzeramento?";r.style.color="var(--accent)";setTimeout(()=>{a=false;r.textContent="Azzera timbri e premi";r.style.color=""},3000);return}S.stamps=0;S.rewards=0;S.hist=[];a=false;r.textContent="Azzera timbri e premi";r.style.color="";save();render()}}$("mclose").onclick=()=>{$("modal").hidden=true};
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+const DAY=86400000,NAMES=["domenica","lunedì","martedì","mercoledì","giovedì","venerdì","sabato"];
+let onlyDorm=false;
+function hist(){
+  const H=$("hist");H.textContent="";if(!S.hist.length)return;
+  H.append(el("div","h2","Premi consegnati"));
+  [...S.hist].reverse().forEach(r=>{
+    const row=el("div","hr"),i=el("div");
+    i.append(el("b",0,r.n),el("div","m",r.p+" · "+new Date(r.t).toLocaleDateString("it-IT",{day:"numeric",month:"short"})));
+    const x=el("button","x","Elimina");let a=false;
+    x.onclick=()=>{if(!a){a=true;x.textContent="Conferma?";x.style.color="var(--accent)";setTimeout(()=>{a=false;x.textContent="Elimina";x.style.color=""},3000);return}S.hist=S.hist.filter(k=>k!==r);S.rewards=Math.max(0,S.rewards-1);save();render()};
+    row.append(i,x);H.append(row);
+  });
+}
+const days=c=>c.v?Math.floor((Date.now()-c.v)/DAY):null;
+const dormant=c=>c.v&&days(c)>=S.days;
+function msg(c){const m=S.goal-c.s;return "Ciao "+c.n+"! "+(m>0?"Ti mancano solo "+m+(m===1?" timbro":" timbri")+" per: "+S.prize+". ":"Hai un premio che ti aspetta: "+S.prize+". ")+"Ti aspettiamo"+(S.shop?" da "+S.shop:"")+"!"}
+function call(c){const t=msg(c);try{navigator.clipboard.writeText(t)}catch(e){}window.open("https://wa.me/?text="+encodeURIComponent(t),"_blank","noopener")}
+function ins(){
+  const b=$("ins");b.textContent="";b.append(el("div","h","Giorni e clienti"));
+  const cnt=[0,0,0,0,0,0,0];S.log.forEach(t=>cnt[new Date(t).getDay()]++);
+  if(S.log.length<5){b.append(el("div","m","Dopo qualche timbro vedrai qui i tuoi giorni più deboli."))}
+  else{
+    const order=[1,2,3,4,5,6,0],mx=Math.max(...cnt),bars=el("div","bars");
+    order.forEach(d=>{const w=el("div","bar"),i=document.createElement("i");i.style.height=Math.max(2,Math.round(40*cnt[d]/mx))+"px";w.append(i,el("span",0,NAMES[d].slice(0,3)));bars.append(w)});
+    b.append(bars);
+    const weak=order.reduce((a,d)=>cnt[d]<cnt[a]?d:a,1);
+    b.append(el("div","m","Giorno più debole: "+NAMES[weak]+". Prova il timbro doppio quel giorno."));
+  }
+  const n=S.cust.filter(dormant).length;
+  if(n)b.append(el("div","m badge",n+(n===1?" cliente non torna":" clienti non tornano")+" da "+S.days+"+ giorni: tocca Dormienti e usa Richiama."));
+}
+function el(t,c,x){const e=document.createElement(t);if(c)e.className=c;if(x!==undefined)e.textContent=x;return e}
+function render(){
+  $("s1").textContent=S.cust.length;$("s2").textContent=S.stamps;$("s3").textContent=S.rewards;ins();hist();
+  const q=$("q").value.trim().toLowerCase();
+  const L=$("list");L.textContent="";
+  const items=S.cust.filter(c=>(c.n+" "+c.c).toLowerCase().includes(q)&&(!onlyDorm||dormant(c)));
+  if(!items.length){L.append(el("div","empty",S.cust.length?"Nessun cliente trovato.":"Aggiungi il tuo primo cliente per iniziare."));return}
+  items.forEach(c=>{
+    const card=el("div","cust"),top=el("div","top");
+    top.append(el("b",0,c.n),el("span",dormant(c)?"badge":"",Math.min(c.s,S.goal)+" / "+S.goal+(c.v?" · "+(days(c)===0?"oggi":days(c)+" g fa"):"")));
+    const dots=el("div","dots");
+    for(let i=0;i<S.goal;i++)dots.append(el("div","dot"+(i<c.s?" on":"")));
+    const acts=el("div","acts");
+    const done=c.s>=S.goal;
+    if(done){const b=el("button","ok","Consegna: "+S.prize);b.onclick=()=>{c.s-=S.goal;S.rewards++;S.hist.push({n:c.n,p:S.prize,t:Date.now()});save();render()};acts.append(b)}
+    else{const dbl=S.dbl>=0&&new Date().getDay()===S.dbl;const b=el("button","p",dbl?"+ Timbro doppio":"+ Timbro");b.onclick=()=>{const n=dbl?2:1;c.s+=n;S.stamps+=n;c.v=Date.now();S.log.push(c.v);if(S.log.length>3000)S.log.shift();save();render()};acts.append(b)}
+    const u=el("button",0,"−");u.title="Togli timbro";u.onclick=()=>{if(c.s>0){c.s--;S.stamps=Math.max(0,S.stamps-1);save();render()}};
+    const x=el("button","x","Elimina");let armed=false;x.onclick=()=>{if(!armed){armed=true;x.textContent="Conferma?";x.style.color="var(--accent)";setTimeout(()=>{armed=false;x.textContent="Elimina";x.style.color=""},3000);return}S.cust=S.cust.filter(k=>k!==c);save();render()};
+    const qb=el("button","q","QR");qb.onclick=()=>showQR(c);acts.append(qb);
+    if(dormant(c)){const r=el("button","p","Richiama");r.onclick=()=>call(c);acts.append(r)}
+    acts.append(u,x);
+    card.append(top,dots,acts);L.append(card);
+  });
+}
+$("shop").value=S.shop;$("goal").value=S.goal;$("prize").value=S.prize;$("dbl").value=S.dbl;$("dorm").value=S.days;
+$("dbl").onchange=e=>{S.dbl=parseInt(e.target.value);save();render()};
+$("dorm").onchange=e=>{S.days=Math.min(365,Math.max(3,parseInt(e.target.value)||21));e.target.value=S.days;save();render()};
+$("shop").oninput=e=>{S.shop=e.target.value;save()};
+$("prize").oninput=e=>{S.prize=e.target.value||"Premio gratis";save()};
+$("goal").onchange=e=>{S.goal=Math.min(20,Math.max(2,parseInt(e.target.value)||8));e.target.value=S.goal;save();render()};
+$("q").oninput=render;
+function addC(){const n=$("name").value.trim();if(!n)return;S.cust.unshift({n,s:0,c:code()});$("name").value="";save();render()}
+$("addb").onclick=addC;
+$("name").onkeydown=e=>{if(e.key==="Enter")addC()};
+render();
+</script>
+</body>
+</html>

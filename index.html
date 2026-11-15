@@ -95,8 +95,9 @@ button.x{box-shadow:none}
   <div id="hist"></div>
 </main>
 <div class="modal" id="modal" hidden><div class="sheet"><b id="mname"></b><div id="qrbox"></div><div id="mcode"></div><button class="p" id="mclose">Chiudi</button></div></div>
-<div class="modal" id="scanm" hidden><div class="sheet"><video id="vid" playsinline muted></video><button id="sclose">Annulla</button></div></div>
+<div class="modal" id="scanm" hidden><div class="sheet"><video id="vid" playsinline muted></video><div class="m" style="margin:0 0 10px">Inquadra il QR del cliente</div><button id="sclose">Annulla</button></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
 <script>
 const KEY="fedelta-negozio-v1";
 let S={shop:"",goal:8,prize:"Premio gratis",stamps:0,rewards:0,cust:[],log:[],hist:[],dbl:-1,days:21};
@@ -113,14 +114,22 @@ function showQR(c){
 let stream=null;
 function stopScan(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}$("scanm").hidden=true}
 async function scan(){
-  if(!("BarcodeDetector" in window)||!navigator.mediaDevices){alert("La fotocamera non è disponibile qui: scrivi il codice di 6 caratteri nella ricerca.");return}
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){alert("La fotocamera non è disponibile: scrivi il codice di 6 caratteri nella ricerca.");return}
   try{
-    const det=new BarcodeDetector({formats:["qr_code"]});
-    stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"}});
-    const v=$("vid");v.srcObject=stream;await v.play();$("scanm").hidden=false;
-    const loop=async()=>{if(!stream)return;try{const r=await det.detect(v);if(r.length){const t=r[0].rawValue.replace("FEDELTA:","");stopScan();$("q").value=t;render();return}}catch(e){}setTimeout(loop,300)};
+    const det="BarcodeDetector" in window?new BarcodeDetector({formats:["qr_code"]}):null;
+    stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"}}});
+    const v=$("vid");v.setAttribute("playsinline","");v.muted=true;v.srcObject=stream;await v.play();$("scanm").hidden=false;
+    const cv=document.createElement("canvas"),cx=cv.getContext("2d",{willReadFrequently:true});
+    const done=t=>{t=String(t||"").trim();if(!t)return false;stopScan();$("q").value=t.replace(/^FEDELTA:/i,"");render();return true};
+    const loop=async()=>{
+      if(!stream)return;
+      try{
+        if(det){const r=await det.detect(v);if(r.length&&done(r[0].rawValue))return}
+        else if(window.jsQR&&v.videoWidth){const w=Math.min(640,v.videoWidth),hh=Math.round(w*v.videoHeight/v.videoWidth);cv.width=w;cv.height=hh;cx.drawImage(v,0,0,w,hh);const d=cx.getImageData(0,0,w,hh);const r=jsQR(d.data,w,hh,{inversionAttempts:"dontInvert"});if(r&&done(r.data))return}
+      }catch(e){}
+      setTimeout(loop,250)};
     loop();
-  }catch(e){stopScan();alert("Impossibile usare la fotocamera: scrivi il codice nella ricerca.")}
+  }catch(e){stopScan();alert("Non riesco a usare la fotocamera. Controlla il permesso in Impostazioni → Safari → Fotocamera, oppure scrivi il codice nella ricerca.")}
 }
 $("scanb").onclick=scan;$("sclose").onclick=stopScan;
 $("dormb").onclick=()=>{onlyDorm=!onlyDorm;$("dormb").className=onlyDorm?"p":"";render()};
